@@ -57,7 +57,7 @@ class _IndicadorScreenState extends State<IndicadorScreen> {
   @override
   void initState() {
     super.initState();
-    var indicador = Indicador(id: 1, descricao: "30");
+    var indicador = Indicador(id: 1, descricao: "Euro");
     final cotacao =
         Cotacao(id: 1, dataHora: DateTime.now(), valor: 5, indicador: indicador);
     final cotacao2 =
@@ -164,32 +164,20 @@ class _IndicadorScreenState extends State<IndicadorScreen> {
                   },
                 ),
         ),
-        Expanded(
+        Container(
+          margin: EdgeInsets.all(16.0),
+          height: 300,
           child: LineChart(
             LineChartData(
               gridData: FlGridData(show: true),
-              titlesData: FlTitlesData(
-                bottomTitles: SideTitles(showTitles: true),
-                leftTitles: SideTitles(showTitles: false),
-                rightTitles: SideTitles(showTitles: false),
-                topTitles: SideTitles(showTitles: false),
-                
-              ),
-              borderData: FlBorderData(
-                show: true,
-                border: Border.all(color: const Color(0xff37434d), width: 1),
-              ),
-              minX: 1,
-              maxX: 30,
-              minY: 0,
-              maxY: cotacoes.map((cotacao) => cotacao.valor).reduce((a, b) => a > b ? a : b),
+              titlesData: FlTitlesData(show: false),
               lineBarsData: [
                 LineChartBarData(
                   spots: cotacoes
                       .map((cotacao) => FlSpot(
-                        cotacoes.indexOf(cotacao).toDouble(),
-                        cotacao.valor,
-                      ))
+                            cotacoes.indexOf(cotacao).toDouble(),
+                            cotacao.valor,
+                          ))
                       .toList(),
                   isCurved: true,
                   color: Colors.green,
@@ -388,39 +376,28 @@ class _IndicadorScreenState extends State<IndicadorScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Acompanhamento de Indicador'),
-            content: Column(
-              children: [
-                Expanded(
-                  child: LineChart(
-                    LineChartData(
-                      gridData: FlGridData(show: false),
-                      titlesData: FlTitlesData(show: true),
-                      borderData: FlBorderData(
-                        show: true,
-                        border: Border.all(color: const Color(0xff37434d), width: 1),
-                      ),
-                      minX: 1,
-                      maxX: 30,
-                      minY: 0,
-                      maxY: cotacoes.map((cotacao) => cotacao.valor).reduce((a, b) => a > b ? a : b),
-                      lineBarsData: [
-                        LineChartBarData(
-                          spots: cotacoes
-                              .map((cotacao) => FlSpot(
+            content: SizedBox(
+              height: 300,
+              child: LineChart(
+                LineChartData(
+                  gridData: FlGridData(show: true),
+                  titlesData: FlTitlesData(show: false),
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: cotacoes
+                          .map((cotacao) => FlSpot(
                                 cotacoes.indexOf(cotacao).toDouble(),
                                 cotacao.valor,
                               ))
-                              .toList(),
-                          isCurved: true,
-                          color: Colors.green,
-                          dotData: FlDotData(show: true),
-                          belowBarData: BarAreaData(show: false),
-                        ),
-                      ],
+                          .toList(),
+                      isCurved: true,
+                      color: Colors.green,
+                      dotData: FlDotData(show: true),
+                      belowBarData: BarAreaData(show: false),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
             actions: <Widget>[
               TextButton(
@@ -446,7 +423,7 @@ class _IndicadorScreenState extends State<IndicadorScreen> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-          ),
+              ),
             ],
           );
         },
@@ -454,3 +431,4 @@ class _IndicadorScreenState extends State<IndicadorScreen> {
     }
   }
 }
+
